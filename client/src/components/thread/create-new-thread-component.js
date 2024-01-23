@@ -41,7 +41,7 @@ export class CreateNewThreadComponent extends LitElement {
 
         return html`
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            <span class="material-symbols-outlined">add_comment</span>
+            <span class="material-symbols-outlined">library_add</span>
             Add new thread
         </button>
 
@@ -58,7 +58,7 @@ export class CreateNewThreadComponent extends LitElement {
                             <div class="row">
                                 <div class="col">
                                     <div class="input-group mb-3">
-                                        <span class="input-group-text" id="inputGroup-sizing-default">Thread Subject</span>
+                                        <span class="input-group-text" id="inputGroup-sizing-default">Thread Question</span>
                                         <textarea id="subjectTextArea" class="form-control" aria-label="With textarea" @input="${this.onTextAreaInput}"></textarea>
                                     </div>
                                 </div>

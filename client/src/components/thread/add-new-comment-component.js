@@ -45,7 +45,7 @@ export class AddNewCommentComponent extends LitElement {
             <p class="d-inline-flex gap-1">
                 <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     <div class="container">
-                        <span class="material-symbols-outlined">comment</span>
+                        <span class="material-symbols-outlined">add_comment</span>
                         Add a comment
                     </div>
                 </button>
