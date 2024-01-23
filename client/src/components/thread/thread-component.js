@@ -58,9 +58,6 @@ export class Thread extends LitElement {
                             </div>
                         </div>
                     </div>
-
-
-
                 </button>
               </h2>
               <div id="collapse${index}"  class="accordion-collapse collapse" data-bs-parent="#accordionExample">

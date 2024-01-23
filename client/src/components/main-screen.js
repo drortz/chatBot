@@ -106,10 +106,6 @@ export class MainScreen extends LitElement {
           <div class="col"><h1>Welcome to Chat-Bot !</h1></div>
           <div class="col"><h5>Smart way to get an answeres based on previouse comments !</h5></div>
         </div>
-
-   
-
-        
       </div>
       <row>
         <div class="col text-center"><create-new-thread-component @new-thread-subject="${this.handleNewThreadEvent}"></create-new-thread-component></div>
