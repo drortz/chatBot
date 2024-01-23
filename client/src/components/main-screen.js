@@ -79,6 +79,12 @@ export class MainScreen extends LitElement {
       existingThreadModal.show();
       this.requestUpdate();
     }
+
+    //close more comments collapse area
+    const bsCollapse = new bootstrap.Collapse('#otherCommentsCollapse', {
+      toggle: false
+    });
+    bsCollapse.hide();
   }
 
   showNewThreadToast() {
@@ -130,7 +136,7 @@ export class MainScreen extends LitElement {
         </div>
       </div>
     </div>
-
+    
     <div class="modal fade" id="existingThreadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -147,7 +153,8 @@ export class MainScreen extends LitElement {
                     <!-- same likes amount-->
                     <div class="container">
                       <div class="row">
-                        <h5>Answer/s: </h5>
+                        <div class="col-4"><img src="./../../resource/ChatBot.png" class="img-fluid" style="max-width: 80%;max-height: 80%" ></div>
+                        <div class="col-8"><h5>Hey ! </h5><h5>I have found an answer/s for your question.</h5><p>Here are answers/s from other users !</p></div>
                       </div>
                       ${this.otherComments.concat(this.highestLikesComment).map((comment, index) => html`
                         <div class="card mt-3">
@@ -173,7 +180,8 @@ export class MainScreen extends LitElement {
                     <!-- No same likes amount-->
                   <div class="container">
                     <div class="row">
-                      <h5>The Highest ranked Answer/s: </h5>
+                      <div class="col-4"><img src="./../../resource/ChatBot.png" class="img-fluid" style="max-width: 80%;max-height: 80%" ></div>
+                      <div class="col-8"><h5>Hey !</h5><h5>I have found an answer/s for your question.</h5><p>The answer/s got the highest likes from other users !</p></div>
                     </div>
                     ${this.highestLikesComment.map(comment => html`
                       <div class="row">
@@ -197,17 +205,28 @@ export class MainScreen extends LitElement {
                       </div>
                     `)}
                     
-                    <div class="row pt-3">
+                    <div class="row pt-1">
                       <p class="d-inline-flex gap-1">
-                        <button class="btn btn-info" type="button" data-bs-toggle="collapse"
+
+                      <div class="row">
+                        <div class="col-4"><img src="./../../resource/ChatBot.png" class="img-fluid" style="max-width: 80%;max-height: 80%" ></div>
+                        <div class="col-8"><h5>Do you want to see other answers ?</h5></div>
+                      </div>
+                        
+                        <button class="btn btn-link" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#otherCommentsCollapse" aria-expanded="false" aria-controls="otherCommentsCollapse"
                                 ?disabled="${this.otherComments.length === 0}">
-                          Show me other comments
+                          Yes please
                           <span class="material-symbols-outlined">double_arrow</span>
                         </button>
                       </p>
                       <div class="collapse" id="otherCommentsCollapse">
 
+                        <div class="row">
+                          <div class="col-4"><img src="./../../resource/ChatBot.png" class="img-fluid" style="max-width: 80%;max-height: 80%" ></div>
+                          <div class="col-8"><h5>certainly.</h5><p>Here are more answers !</p></div>
+                        </div>
+                        
                         ${this.otherComments.map((comment, index) => html`
                         <div class="card">
                           <div class="card-body">
@@ -236,7 +255,8 @@ export class MainScreen extends LitElement {
                 : html `
                   <div class="container">
                     <div class="row">
-                      <h5>But no comments yet...<span class="material-symbols-outlined">sentiment_dissatisfied</span></h5>
+                      <div class="col"><img src="./../../resource/ChatBot.png" class="img-fluid" style="max-width: 80%;max-height: 80%" ></div>
+                      <div class="col"><h5>No comments yet...<span class="material-symbols-outlined">sentiment_dissatisfied</span></h5><p>I will track for the best answer for you !</p></div>
                     </div>
                   </div>
                 `}
