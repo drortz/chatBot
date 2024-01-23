@@ -2,23 +2,12 @@ import {html, LitElement} from "lit";
 
 export class Thread extends LitElement {
 
-    // data = {
-    //     threadSubject: String,
-    //     threadComments: Array
-    // }
-
     static properties = {
         threadData: {type: Array},
     };
 
-
     constructor() {
         super();
-        // this.threadData = [];
-        // this.threadData.push({threadSubject: 'subject 1', threadComments: ['comment 1', 'comment 2']})
-        // this.threadData.push({threadSubject: 'subject 2', threadComments: ['comment 1', 'comment 2']})
-        // this.threadData.push({threadSubject: 'subject 3', threadComments: ['comment 1', 'comment 2']})
-        // this.threadData.push({threadSubject: 'subject 4', threadComments: ['comment 1', 'comment 2']})
     }
 
     createRenderRoot() {

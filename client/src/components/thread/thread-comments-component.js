@@ -43,7 +43,6 @@ export class ThreadCommentsComponent extends LitElement{
                                             <div class="card p-1"><h5>${commentObj.comment}</h5></div>
                                         </div>
                                     </div>
-<!--                                    <hr>-->
                                     <div class="row pt-2" class="text-end">
                                         <div class="col">
                                             <span class="material-symbols-outlined" style="cursor: pointer"

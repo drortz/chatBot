@@ -15,19 +15,34 @@ export class MainScreen extends LitElement {
 
   constructor() {
     super();
-
-    this.threadData = [];
-    this.threadData.push({threadSubject: 'What is the best way to shovel snow ?',
-      threadComments: [{comment: 'Using a snow blower !', likes: 1}, {comment: 'Using a snow shovel !', likes: 4}, {comment: 'With your hands :)', likes: 0}]});
-    this.threadData.push({threadSubject: 'what is the most reliable car model ?',
-      threadComments: [{comment: 'Mazda', likes: 2} , {comment: 'Toyota', likes: 4}, {comment: 'Porsche', likes: 6}, {comment: 'Suzuki', likes: 1}, {comment: 'Subaru', likes: 3}]});
-    this.threadData.push({threadSubject: 'which day in a week is the best ?',
-      threadComments: [{comment: 'Monday', likes: 0} , {comment: 'Sunday', likes: 5}, {comment: 'Saturday', likes: 4}]});
+    this.createTestData();
     this.socket = io('http://localhost:3000', {
       extraHeaders: {
         "Access-Control-Allow-Origin": "*"
     }});
     this.socket.on('new connection', console.log);
+  }
+
+  createTestData() {
+    this.threadData = [];
+    this.threadData.push({
+      threadSubject: 'What is the best way to shovel snow ?',
+      threadComments: [{comment: 'Using a snow blower !', likes: 1}, {
+        comment: 'Using a snow shovel !',
+        likes: 4
+      }, {comment: 'With your hands :)', likes: 0}]
+    });
+    this.threadData.push({
+      threadSubject: 'what is the most reliable car model ?',
+      threadComments: [{comment: 'Mazda', likes: 2}, {comment: 'Toyota', likes: 4}, {
+        comment: 'Porsche',
+        likes: 6
+      }, {comment: 'Suzuki', likes: 1}, {comment: 'Subaru', likes: 3}]
+    });
+    this.threadData.push({
+      threadSubject: 'which day in a week is the best ?',
+      threadComments: [{comment: 'Monday', likes: 0}, {comment: 'Sunday', likes: 5}, {comment: 'Saturday', likes: 4}]
+    });
   }
 
   static styles = [style];
@@ -40,16 +55,6 @@ export class MainScreen extends LitElement {
     return this;
   }
 
-  // static get styles() {
-  //   const { cssRules } = document.styleSheets[0]
-  //   const globalStyle = css([Object.values(cssRules).map(rule =>
-  //       rule.cssText).join('\n')])
-  //   return [
-  //     globalStyle,
-  //     css`
-  //     `
-  //   ];
-  // }
   highestLikesComment = [];
   otherComments = [];
   areAllCommentsLikesSame = false;
@@ -67,9 +72,6 @@ export class MainScreen extends LitElement {
       this.highestLikesComment = botComponent.getHighestLikesComment(this.threadData, event.detail.subject);
       this.areAllCommentsLikesSame = botComponent.areAllLikesSame(this.threadData, event.detail.subject);
 
-      // this.otherComments = this.threadData.filter(thread => thread.threadSubject.toLowerCase() === event.detail.subject)[0].
-      //                       threadComments.filter(comment => comment.comment.toLowerCase() !== this.highestLikesComment.comment.toLowerCase());
-
       const comments = this.threadData.filter(thread => thread.threadSubject.toLowerCase() === event.detail.subject)[0];
       this.otherComments = comments.threadComments.filter(comment => !this.highestLikesComment.includes(comment));
 
@@ -83,7 +85,6 @@ export class MainScreen extends LitElement {
     const toastLiveExample = document.getElementById('newThreadToast')
     const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
     toastBootstrap.show();
-    // document.getElementById("subjectTextArea").value = '';
   }
 
   handleUpdatedThreadDataEvent(event) {
@@ -140,8 +141,7 @@ export class MainScreen extends LitElement {
             ${this.highestLikesComment[0] ?  html `
 
                   ${this.areAllCommentsLikesSame ? html `
-                    <!-- same likes -->
-
+                    <!-- same likes amount-->
                     <div class="container">
                       <div class="row">
                         <h5>Answer/s: </h5>
@@ -166,11 +166,8 @@ export class MainScreen extends LitElement {
                         </div>
                       `)}
                     </div>
-                    
-                    
-                    
                   ` : html `
-                    <!-- No same likes -->
+                    <!-- No same likes amount-->
                   <div class="container">
                     <div class="row">
                       <h5>The Highest ranked Answer/s: </h5>
@@ -240,9 +237,6 @@ export class MainScreen extends LitElement {
                     </div>
                   </div>
                 `}
-            
-            
-            
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

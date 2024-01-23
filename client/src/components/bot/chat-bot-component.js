@@ -13,11 +13,9 @@ export class ChatBotComponent {
             return {};
         }
 
-        // Initialize variables to keep track of the highest-liked comments
         let highestLikedComments = [];
         let maxLikes = 0;
 
-        // Iterate through thread comments to find the highest-liked comments
         thread.threadComments.forEach(comment => {
             if (comment.likes > maxLikes) {
                 // Found a comment with more likes, reset the array
