@@ -45,18 +45,6 @@ app.post('/insertData', jsonParser, (req, res) => {
     const elasticsearchURL = 'http://localhost:9200/chatBot/_doc';
     const threadData = req.body.threadData;
 
-
-
-
-    const { Client } = require('@elastic/elasticsearch')
-    const client = new Client({ node: 'http://localhost:9200' })
-
-    client.
-
-
-
-
-
     // Make an HTTP POST request to insert data
     fetch(elasticsearchURL, {
         method: 'POST',
