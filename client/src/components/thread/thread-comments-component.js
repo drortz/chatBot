@@ -36,14 +36,15 @@ export class ThreadCommentsComponent extends LitElement{
             : html`
                     <ul class="list-group">
                         ${this.comments.map((commentObj, index) => html`
-                            <li class="list-group-item d-flex justify-content-between align-items-center pt-2">
+                            <li class="list-group-item d-flex justify-content-between align-items-center pt-2" style="background: aliceblue">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col">
-                                            <h5>${commentObj.comment}</h5>
+                                            <div class="card p-1"><h5>${commentObj.comment}</h5></div>
                                         </div>
                                     </div>
-                                    <div class="row" class="text-end">
+<!--                                    <hr>-->
+                                    <div class="row pt-2" class="text-end">
                                         <div class="col">
                                             <span class="material-symbols-outlined" style="cursor: pointer"
                                                   @click="${() => this.dispatchEvent(new CustomEvent('like-click', { detail: { comment: commentObj } }))}">thumb_up</span>

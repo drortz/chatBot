@@ -13,11 +13,23 @@ export class ChatBotComponent {
             return {};
         }
 
-        const highestLikedComment = thread.threadComments.reduce((maxComment, currentComment) => {
-            return currentComment.likes > maxComment.likes ? currentComment : maxComment;
-        }, thread.threadComments[0]);
+        // Initialize variables to keep track of the highest-liked comments
+        let highestLikedComments = [];
+        let maxLikes = 0;
 
-        return highestLikedComment;
+        // Iterate through thread comments to find the highest-liked comments
+        thread.threadComments.forEach(comment => {
+            if (comment.likes > maxLikes) {
+                // Found a comment with more likes, reset the array
+                highestLikedComments = [comment];
+                maxLikes = comment.likes;
+            } else if (comment.likes === maxLikes) {
+                // Found a comment with the same number of likes, add it to the array
+                highestLikedComments.push(comment);
+            }
+        });
+
+        return highestLikedComments;
     }
 
     areAllLikesSame(threadData, threadSubject) {

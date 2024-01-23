@@ -41,6 +41,7 @@ export class CreateNewThreadComponent extends LitElement {
 
         return html`
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <span class="material-symbols-outlined">add_comment</span>
             Add new thread
         </button>
 

@@ -19,7 +19,7 @@ export class MainScreen extends LitElement {
     this.threadData = [];
     this.threadData.push({threadSubject: 'What is the best way to shovel snow ?',
       threadComments: [{comment: 'Using a snow blower !', likes: 1}, {comment: 'Using a snow shovel !', likes: 4}, {comment: 'With your hands :)', likes: 0}]});
-    this.threadData.push({threadSubject: 'what is the best car model ?',
+    this.threadData.push({threadSubject: 'what is the most reliable car model ?',
       threadComments: [{comment: 'Mazda', likes: 2} , {comment: 'Toyota', likes: 4}, {comment: 'Porsche', likes: 6}, {comment: 'Suzuki', likes: 1}, {comment: 'Subaru', likes: 3}]});
     this.threadData.push({threadSubject: 'which day in a week is the best ?',
       threadComments: [{comment: 'Monday', likes: 0} , {comment: 'Sunday', likes: 5}, {comment: 'Saturday', likes: 4}]});
@@ -50,7 +50,7 @@ export class MainScreen extends LitElement {
   //     `
   //   ];
   // }
-  highestLikesComment = {};
+  highestLikesComment = [];
   otherComments = [];
   areAllCommentsLikesSame = false;
 
@@ -61,13 +61,18 @@ export class MainScreen extends LitElement {
       this.threadData = [...this.threadData, { threadSubject: event.detail.subject, threadComments: [] }];
       this.showNewThreadToast();
     } else {
-      this.highestLikesComment = {};
+      this.highestLikesComment = [];
       this.otherComments = [];
 
       this.highestLikesComment = botComponent.getHighestLikesComment(this.threadData, event.detail.subject);
       this.areAllCommentsLikesSame = botComponent.areAllLikesSame(this.threadData, event.detail.subject);
-      this.otherComments = this.threadData.filter(thread => thread.threadSubject.toLowerCase() === event.detail.subject)[0].
-                            threadComments.filter(comment => comment.comment.toLowerCase() !== this.highestLikesComment.comment.toLowerCase());
+
+      // this.otherComments = this.threadData.filter(thread => thread.threadSubject.toLowerCase() === event.detail.subject)[0].
+      //                       threadComments.filter(comment => comment.comment.toLowerCase() !== this.highestLikesComment.comment.toLowerCase());
+
+      const comments = this.threadData.filter(thread => thread.threadSubject.toLowerCase() === event.detail.subject)[0];
+      this.otherComments = comments.threadComments.filter(comment => !this.highestLikesComment.includes(comment));
+
       const existingThreadModal = new bootstrap.Modal(document.getElementById('existingThreadModal'));
       existingThreadModal.show();
       this.requestUpdate();
@@ -132,7 +137,7 @@ export class MainScreen extends LitElement {
           </div>
           <div class="modal-body">
             
-            ${this.highestLikesComment.comment ?  html `
+            ${this.highestLikesComment[0] ?  html `
 
                   ${this.areAllCommentsLikesSame ? html `
                     <!-- same likes -->
@@ -160,27 +165,30 @@ export class MainScreen extends LitElement {
                     <!-- No same likes -->
                   <div class="container">
                     <div class="row">
-                      <h5>The best Answer is: </h5>
+                      <h5>The best Answer/s: </h5>
                     </div>
-                    <div class="row">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="row">
-                            <h6>${this.highestLikesComment.comment}</h6>
-                          </div>
-                        </div>
-                        <div class="card-footer">
-                          <div class="row">
-                            <div class="col-1">
-                              <span class="material-symbols-outlined">thumb_up</span>
+                    ${this.highestLikesComment.map(comment => html`
+                      <div class="row">
+                        <div class="card">
+                          <div class="card-body">
+                            <div class="row">
+                              <h6>${comment.comment}</h6>
                             </div>
-                            <div class="col-1">
-                              <p>${this.highestLikesComment.likes}</p>
+                          </div>
+                          <div class="card-footer">
+                            <div class="row">
+                              <div class="col-1">
+                                <span class="material-symbols-outlined">thumb_up</span>
+                              </div>
+                              <div class="col-1">
+                                <p>${comment.likes}</p>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    `)}
+                    
                     <div class="row pt-3">
                       <p class="d-inline-flex gap-1">
                         <button class="btn btn-info" type="button" data-bs-toggle="collapse"
