@@ -101,11 +101,15 @@ export class MainScreen extends LitElement {
     return html`
     <div class="container justify-content-center pt-5">
       <div class="row">
-        <img src="./../../resource/Chat.png" class="img-fluid" style="max-width: 10%;max-height: 10%">
+        <img src="./../../resource/ChatBot_2.png" class="img-fluid" style="max-width: 10%;max-height: 10%">
         <div class="col">
           <div class="col"><h1>Welcome to Chat-Bot !</h1></div>
           <div class="col"><h5>Smart way to get an answeres based on previouse comments !</h5></div>
         </div>
+
+   
+
+        
       </div>
       <row>
         <div class="col text-center"><create-new-thread-component @new-thread-subject="${this.handleNewThreadEvent}"></create-new-thread-component></div>
