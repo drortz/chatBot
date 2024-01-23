@@ -141,7 +141,12 @@ export class MainScreen extends LitElement {
 
                   ${this.areAllCommentsLikesSame ? html `
                     <!-- same likes -->
-                    ${this.otherComments.concat(this.highestLikesComment).map((comment, index) => html`
+
+                    <div class="container">
+                      <div class="row">
+                        <h5>Answer/s: </h5>
+                      </div>
+                      ${this.otherComments.concat(this.highestLikesComment).map((comment, index) => html`
                         <div class="card mt-3">
                           <div class="card-body">
                             <div class="row">
@@ -160,12 +165,15 @@ export class MainScreen extends LitElement {
                           </div>
                         </div>
                       `)}
+                    </div>
+                    
+                    
                     
                   ` : html `
                     <!-- No same likes -->
                   <div class="container">
                     <div class="row">
-                      <h5>The best Answer/s: </h5>
+                      <h5>The Highest ranked Answer/s: </h5>
                     </div>
                     ${this.highestLikesComment.map(comment => html`
                       <div class="row">
