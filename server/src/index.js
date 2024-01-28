@@ -1,21 +1,30 @@
 import express from 'express';
-import httpServer from 'http';
+import http from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
-import fetch from 'node-fetch';
-import { createRequire } from "module";
+import { createRequire } from 'module';
+import { Client } from '@elastic/elasticsearch';
+import {ElasticService} from "./service/elastic-service.js";
 
 const require = createRequire(import.meta.url);
 const app = express();
 
 app.use(cors());
-const http =  httpServer.createServer(app);
+const httpServer = http.createServer(app);
 
-http.listen(3000, () => {
+httpServer.listen(3000, () => {
     console.log('listening on *:3000');
 });
 
-const io = new Server(http, {
+const elasticClient = new Client({
+    node: 'https://80e96e76cabb42c49538ccd5f101728c.us-east-2.aws.elastic-cloud.com:443',
+    auth: {
+        user: 'ApiKey',
+        apiKey: 'dWNSeFNJMEI0dzFkMU8wUmowTzY6SHg5ejRZYlJSYnFlY1VBU0x1cTFIZw=='
+    }
+});
+
+const io = new Server(httpServer, {
     cors: {
         origin: "*",
         methods: ["GET", "POST"],
@@ -24,7 +33,7 @@ const io = new Server(http, {
 });
 
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+    res.send('Hello World!');
 });
 
 io.on('connection', (socket) => {
@@ -32,39 +41,22 @@ io.on('connection', (socket) => {
     io.emit('new connection', 'new connection');
 });
 
+const jsonParser = express.json();
 
-// var express = require('express')
-const bodyParser = require('body-parser');
-const jsonParser = bodyParser.json();
+app.put('/insertData', jsonParser, async (req, res) => {
+    const index = req.query.index;
+    const elasticService = new ElasticService();
+    await elasticService.insertData(index, req, res);
+});
 
-// create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+app.get('/getAllData', async (req, res) => {
+    const index = req.query.index;
+    const elasticService = new ElasticService();
+    await elasticService.getAllData(index, res);
+});
 
-// New endpoint for inserting data into Elasticsearch
-app.post('/insertData', jsonParser, (req, res) => {
-    const elasticsearchURL = 'http://localhost:9200/chatBot/_doc';
-    const threadData = req.body.threadData;
-
-    // Make an HTTP POST request to insert data
-    fetch(elasticsearchURL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ threadData }),
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Data inserted successfully:', data);
-            res.status(200).json({ message: 'Data inserted successfully' });
-        })
-        .catch(error => {
-            console.error('Error inserting data:', error.message);
-            res.status(500).json({ error: 'Internal Server Error' });
-        });
+app.delete('/deleteAllData', async (req, res) => {
+    const index = req.query.index;
+    const elasticService = new ElasticService();
+    await elasticService.deleteAllData(index, res);
 });

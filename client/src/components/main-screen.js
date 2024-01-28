@@ -3,19 +3,20 @@ import style from './main-screen.css.js';
 import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 import {ChatBotComponent} from "./bot/chat-bot-component.js";
 
-/**
- * An example element.
- */
 export class MainScreen extends LitElement {
+
   static get properties() {
     return {
       threadData: {type: Array},
+      frequentlyAskedQuestionData: {type: Array},
     };
   }
 
   constructor() {
     super();
-    this.createTestData();
+    // this.createTestData();
+    this.fetchUserQuestionsData();
+    this.fetchfrequentlyAskedQuestionData();
     this.socket = io('http://localhost:3000', {
       extraHeaders: {
         "Access-Control-Allow-Origin": "*"
@@ -23,25 +24,29 @@ export class MainScreen extends LitElement {
     this.socket.on('new connection', console.log);
   }
 
-  createTestData() {
-    this.threadData = [];
-    this.threadData.push({
-      threadSubject: 'What is the best way to shovel snow ?',
-      threadComments: [{comment: 'Using a snow blower !', likes: 1}, {
-        comment: 'Using a snow shovel !',
-        likes: 4
-      }, {comment: 'With your hands :)', likes: 0}]
+  fetchUserQuestionsData() {
+    const getDataApiUrl = 'http://localhost:3000/getAllData?index=users_questions';
+    fetch(getDataApiUrl).then(response => {
+      if (!response.ok) {
+        this.threadData = [];
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    }).then(data => {
+          this.threadData = data.hits.map(hit => hit._source);
     });
-    this.threadData.push({
-      threadSubject: 'what is the most reliable car model ?',
-      threadComments: [{comment: 'Mazda', likes: 2}, {comment: 'Toyota', likes: 4}, {
-        comment: 'Porsche',
-        likes: 6
-      }, {comment: 'Suzuki', likes: 1}, {comment: 'Subaru', likes: 3}]
-    });
-    this.threadData.push({
-      threadSubject: 'which day in a week is the best ?',
-      threadComments: [{comment: 'Monday', likes: 0}, {comment: 'Sunday', likes: 5}, {comment: 'Saturday', likes: 4}]
+  }
+
+  fetchfrequentlyAskedQuestionData() {
+    const getDataApiUrl = 'http://localhost:3000/getAllData?index=frequently_asked_question';
+    fetch(getDataApiUrl).then(response => {
+      if (!response.ok) {
+        this.frequentlyAskedQuestionData = [];
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    }).then(data => {
+      this.frequentlyAskedQuestionData = data.hits.map(hit => hit._source);
     });
   }
 
@@ -61,18 +66,19 @@ export class MainScreen extends LitElement {
 
   handleNewThreadEvent(event) {
     const botComponent = new ChatBotComponent();
+    const userQuestionsAndFaq = this.threadData.concat(this.frequentlyAskedQuestionData);
     document.getElementById("subjectTextArea").value = '';
-    if (!botComponent.isQuestionAnswered(this.threadData, event.detail.subject)) {
+    if (!botComponent.isQuestionAnswered(userQuestionsAndFaq, event.detail.subject)) {
       this.threadData = [...this.threadData, { threadSubject: event.detail.subject, threadComments: [] }];
       this.showNewThreadToast();
     } else {
       this.highestLikesComment = [];
       this.otherComments = [];
 
-      this.highestLikesComment = botComponent.getHighestLikesComment(this.threadData, event.detail.subject);
-      this.areAllCommentsLikesSame = botComponent.areAllLikesSame(this.threadData, event.detail.subject);
+      this.highestLikesComment = botComponent.getHighestLikesComment(userQuestionsAndFaq, event.detail.subject);
+      this.areAllCommentsLikesSame = botComponent.areAllLikesSame(userQuestionsAndFaq, event.detail.subject);
 
-      const comments = this.threadData.filter(thread => thread.threadSubject.toLowerCase() === event.detail.subject)[0];
+      const comments = userQuestionsAndFaq.filter(thread => thread.threadSubject.toLowerCase() === event.detail.subject.toLowerCase())[0];
       this.otherComments = comments.threadComments.filter(comment => !this.highestLikesComment.includes(comment));
 
       const existingThreadModal = new bootstrap.Modal(document.getElementById('existingThreadModal'));
@@ -118,7 +124,7 @@ export class MainScreen extends LitElement {
               <thread-component .threadData=${this.threadData} @update-threads-data="${this.handleUpdatedThreadDataEvent}"></thread-component>
 
             </div>
-            <div class="card-footer"><h6>Total threads: ${this.threadData.length}</h6></div>
+            <div class="card-footer"><h6>Total threads: ${this.threadData?.length}</h6></div>
           </div>
         </div>
       </div>

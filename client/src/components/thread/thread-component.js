@@ -41,7 +41,7 @@ export class Thread extends LitElement {
     render() {
         return html`          
             
-            ${this.threadData.map((data, index) => html`
+            ${this.threadData?.map((data, index) => html`
             <div class="accordion-item">
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="false" aria-controls="collapse${index}">
