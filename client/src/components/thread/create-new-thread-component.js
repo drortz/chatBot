@@ -40,9 +40,9 @@ export class CreateNewThreadComponent extends LitElement {
         const isSaveButtonDisabled = this.subject.trim() === '';
 
         return html`
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             <span class="material-symbols-outlined">library_add</span>
-            Add new thread
+            Ask A Question
         </button>
 
         <!-- Modal -->

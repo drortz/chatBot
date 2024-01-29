@@ -84,4 +84,40 @@ export class ElasticService {
             res.status(500).json({success: false, error: 'Internal Server Error'});
         }
     }
+
+    async upsertComment(indexName, req, res) {
+        try {
+            const upsertData = req.body;
+            const searchResult = await this.elasticClient.search({
+                      index: 'users_questions',
+                      body: {
+                        query: {
+                          match: {
+                              threadSubject: upsertData.threadSubject
+                          },
+                        },
+                      },
+                    });
+            if (searchResult.hits.total.value > 0) {
+                const threadDocument = searchResult.hits.hits[0]._source;
+
+                // Add the new comment to the existing comments array
+                threadDocument.threadComments.push(upsertData.threadComments[0]);
+
+                // Update the document with the new comments
+                const updatedDocument = await this.elasticClient.update({
+                    index: 'users_questions',
+                    id: searchResult.hits.hits[0]._id,
+                    body: {
+                        doc: threadDocument,
+                    },
+                });
+
+                res.status(200).json({success: true, message: 'New comment has been updated successfully.'});
+            }
+        } catch (error) {
+            console.error('Error adding comment:', error);
+            res.status(500).json({success: true, message: 'Error: ' + error});
+        }
+    }
 }

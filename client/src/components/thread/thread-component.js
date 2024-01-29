@@ -34,8 +34,25 @@ export class Thread extends LitElement {
             }
         }));
 
+        this.upsertComment({threadSubject: thread.threadSubject, threadComments: [{comment: comment, likes: 0}]});
+
         this.threadData = updatedThreadData;
         this.requestUpdate();
+    }
+
+    upsertComment(upsertCommentData) {
+        const upsertCommentURL = 'http://localhost:3000/upsertComment?index=users_questions';
+        fetch(upsertCommentURL,{
+          method: 'PUT',
+          headers:{
+            'Content-Type':'application/json'
+          },
+          body: JSON.stringify(upsertCommentData)
+        }).then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+        }).then(data => console.log(data));
     }
 
     render() {
@@ -47,9 +64,9 @@ export class Thread extends LitElement {
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="false" aria-controls="collapse${index}">
                     <div class="container">
                         <div class="row">
-                            <div class="ps-4">
+                            <div class="col">
                                 <span class="material-symbols-outlined">forum</span>
-                                <h4>${data.threadSubject}</h4>
+                                <h5>${data.threadSubject}</h5>
                             </div>
                         </div>
                         <div class="row">

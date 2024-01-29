@@ -55,6 +55,12 @@ app.put('/upsertThread', jsonParser, async (req, res) => {
     await elasticService.upsertThread(index, req, res);
 });
 
+app.put('/upsertComment', jsonParser, async (req, res) => {
+    const index = req.query.index;
+    const elasticService = new ElasticService();
+    await elasticService.upsertComment(index, req, res);
+});
+
 app.get('/getAllData', async (req, res) => {
     const index = req.query.index;
     const elasticService = new ElasticService();
