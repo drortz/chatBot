@@ -43,10 +43,16 @@ io.on('connection', (socket) => {
 
 const jsonParser = express.json();
 
-app.put('/insertData', jsonParser, async (req, res) => {
+app.put('/upsertBulkThreads', jsonParser, async (req, res) => {
     const index = req.query.index;
     const elasticService = new ElasticService();
-    await elasticService.insertData(index, req, res);
+    await elasticService.upsertBulkThreads(index, req, res);
+});
+
+app.put('/upsertThread', jsonParser, async (req, res) => {
+    const index = req.query.index;
+    const elasticService = new ElasticService();
+    await elasticService.upsertThread(index, req, res);
 });
 
 app.get('/getAllData', async (req, res) => {

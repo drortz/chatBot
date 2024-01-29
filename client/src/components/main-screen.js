@@ -8,25 +8,24 @@ export class MainScreen extends LitElement {
   static get properties() {
     return {
       threadData: {type: Array},
-      frequentlyAskedQuestionData: {type: Array},
+      frequentlyAskedQuestionData: {type: Array}
     };
   }
 
   constructor() {
     super();
-    // this.createTestData();
     this.fetchUserQuestionsData();
     this.fetchfrequentlyAskedQuestionData();
     this.socket = io('http://localhost:3000', {
       extraHeaders: {
         "Access-Control-Allow-Origin": "*"
-    }});
+      }
+    });
     this.socket.on('new connection', console.log);
   }
 
   fetchUserQuestionsData() {
-    const getDataApiUrl = 'http://localhost:3000/getAllData?index=users_questions';
-    fetch(getDataApiUrl).then(response => {
+    this.fetchData('users_questions').then(response => {
       if (!response.ok) {
         this.threadData = [];
         throw new Error('Network response was not ok');
@@ -37,9 +36,8 @@ export class MainScreen extends LitElement {
     });
   }
 
-  fetchfrequentlyAskedQuestionData() {
-    const getDataApiUrl = 'http://localhost:3000/getAllData?index=frequently_asked_question';
-    fetch(getDataApiUrl).then(response => {
+  fetchfrequentlyAskedQuestionData(){
+    this.fetchData('frequently_asked_question').then(response => {
       if (!response.ok) {
         this.frequentlyAskedQuestionData = [];
         throw new Error('Network response was not ok');
@@ -50,11 +48,27 @@ export class MainScreen extends LitElement {
     });
   }
 
-  static styles = [style];
-
-  onButtonClick() {
-    this.count++;
+  async fetchData(index) {
+    const getDataApiUrl = 'http://localhost:3000/getAllData?index=' + index;
+    return fetch(getDataApiUrl);
   }
+
+  upsertNewThread(newThread) {
+    const upsertThreadURL = 'http://localhost:3000/upsertThread?index=users_questions';
+    fetch(upsertThreadURL,{
+      method: 'PUT',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify(newThread)
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+    }).then(data => this.showNewThreadToast());
+  }
+
+  static styles = [style];
 
   createRenderRoot() {
     return this;
@@ -69,8 +83,9 @@ export class MainScreen extends LitElement {
     const userQuestionsAndFaq = this.threadData.concat(this.frequentlyAskedQuestionData);
     document.getElementById("subjectTextArea").value = '';
     if (!botComponent.isQuestionAnswered(userQuestionsAndFaq, event.detail.subject)) {
-      this.threadData = [...this.threadData, { threadSubject: event.detail.subject, threadComments: [] }];
-      this.showNewThreadToast();
+      const newThread = { threadSubject: event.detail.subject, threadComments: [] };
+      this.threadData = [...this.threadData, newThread];
+      this.upsertNewThread(newThread);
     } else {
       this.highestLikesComment = [];
       this.otherComments = [];

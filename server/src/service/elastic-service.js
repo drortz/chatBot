@@ -42,31 +42,46 @@ export class ElasticService {
             });
 
             if (body && body.deleted) {
-                res.json({ success: true, message: 'All documents deleted successfully' });
+                res.json({success: true, message: 'All documents deleted successfully'});
             } else {
                 console.error('Unexpected response from Elasticsearch:', body);
-                res.status(500).json({ success: false, error: 'Internal Server Error' });
+                res.status(500).json({success: false, error: 'Internal Server Error'});
             }
         } catch (error) {
             console.error('Error deleting data from Elasticsearch:', error);
-            res.status(500).json({ success: false, error: 'Internal Server Error' });
+            res.status(500).json({success: false, error: 'Internal Server Error'});
         }
     }
 
-    async insertData(indexName, req, res) {
+    async upsertBulkThreads(indexName, req, res) {
         try {
-            const data = req.body.threadData;
+            const upsertData = req.body.threadData;
 
             await this.elasticClient.helpers.bulk({
-                datasource: data,
-                onDocument: (doc) => ({ index: { _index: indexName } }),
+                datasource: upsertData,
+                onDocument: (doc) => ({index: {_index: indexName}}),
             }).then(response => {
-                res.status(200).json({ success: true, message: 'All data have been inserted successfully'});
+                res.status(200).json({success: true, message: 'All data have been inserted successfully'});
             });
 
         } catch (error) {
             console.error('Error inserting data to Elasticsearch:', error);
-            res.status(500).json({ success: false, error: 'Internal Server Error' });
+            res.status(500).json({success: false, error: 'Internal Server Error'});
+        }
+    }
+
+    async upsertThread(indexName, req, res) {
+        try {
+            const upsertData = req.body;
+            await this.elasticClient.index({
+                index: indexName,
+                body: upsertData
+            }).then(response => {
+                res.status(200).json({success: true, message: 'All data have been inserted successfully'});
+            });
+        } catch (error) {
+            console.error('Error inserting data to Elasticsearch:', error);
+            res.status(500).json({success: false, error: 'Internal Server Error'});
         }
     }
 }
