@@ -2,7 +2,7 @@ import {html, LitElement} from "lit";
 
 export class NavBar extends LitElement {
     static properties = {
-
+        searchValue: String
     };
 
     constructor() {
@@ -40,10 +40,6 @@ export class NavBar extends LitElement {
                                 <a class="nav-link active" aria-current="page" href=""><span class="material-symbols-outlined">chat</span> Chat</a>
                             </li>
                         </ul>
-                        <form class="d-flex" role="search">
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form>
                     </div>
                 </div>
             </nav>

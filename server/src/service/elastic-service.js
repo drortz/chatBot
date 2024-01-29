@@ -120,4 +120,25 @@ export class ElasticService {
             res.status(500).json({success: true, message: 'Error: ' + error});
         }
     }
+
+    async searchData(indexName, req, res) {
+        try {
+            const searchtData = req.body;
+            await this.elasticClient.search({
+                index: indexName,
+                body: {
+                    query: {
+                        match_phrase_prefix: {
+                            threadSubject: searchtData.threadSubject
+                        }
+                    }
+                }
+            }).then(response => {
+                res.send(response);
+            });
+        } catch (error) {
+            console.error('Error inserting data to Elasticsearch:', error);
+            res.status(500).json({success: false, error: 'Internal Server Error'});
+        }
+    }
 }

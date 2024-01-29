@@ -118,16 +118,46 @@ export class MainScreen extends LitElement {
     this.threadData = event.detail.updatedThreadData;
   }
 
+  onSearchButtonClick() {
+      this.searchValue = document.getElementById("inputSearchThread").value;
+
+      if (this.searchValue === '') {
+        this.fetchUserQuestionsData();
+        return;
+      }
+
+      const payload = {threadSubject: this.searchValue};
+
+      const upsertThreadURL = 'http://localhost:3000/searchThread?index=users_questions';
+      fetch(upsertThreadURL,{
+          method: 'POST',
+          headers:{
+              'Content-Type':'application/json'
+          },
+          body: JSON.stringify(payload)
+      }).then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.json();
+      }).then(data => {
+          const filteredThreads = data.hits.hits.map(hit => hit._source);
+          this.threadData = filteredThreads;
+      });
+  }
+
   render() {
     return html`
     <div class="container justify-content-center pt-1">
       <div class="row">
         <div class="col">
+          <div class="d-flex">
+            <input id="inputSearchThread" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button @click="${this.onSearchButtonClick}" class="btn btn-outline-success">Search</button>
+          </div>
         </div>
+        <div class="col"><create-new-thread-component @new-thread-subject="${this.handleNewThreadEvent}"></create-new-thread-component></div>
       </div>
-      <row>
-        <div class="col text-center"><create-new-thread-component @new-thread-subject="${this.handleNewThreadEvent}"></create-new-thread-component></div>
-      </row>
       <div class="row">
         <div class="col">
           <div class="card m-3">

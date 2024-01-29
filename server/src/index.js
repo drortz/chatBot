@@ -72,3 +72,9 @@ app.delete('/deleteAllData', async (req, res) => {
     const elasticService = new ElasticService();
     await elasticService.deleteAllData(index, res);
 });
+
+app.post('/searchThread', jsonParser, async (req, res) => {
+    const index = req.query.index;
+    const elasticService = new ElasticService();
+    await elasticService.searchData(index, req, res);
+});
