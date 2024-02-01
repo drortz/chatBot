@@ -15,5 +15,6 @@ The system is automatically answering on previouse questions based on higher ran
 
 FE is writen is written with Lit web components (https://lit.dev/) Using JavaScript.
 BE is written in Javascript with the Express.js framework for building web applications and APIs.
+DB: Elasticsearch DB
 
 Dror Tzruya
