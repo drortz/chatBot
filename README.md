@@ -13,6 +13,9 @@ What happens if my flight is delayed?
 
 The system is automatically answering on previouse questions based on higher ranked answer (highest likes).
 
+
+Postman collection: .\PostmanCollection\ChatBot.postman_collection.json
+
 FE is writen is written with Lit web components (https://lit.dev/) Using JavaScript.
 BE is written in Javascript with the Express.js framework for building web applications and APIs.
 DB: Elasticsearch DB
