@@ -1,0 +1,348 @@
+{
+	"info": {
+		"_postman_id": "9ebf7b0e-e7c2-4234-9a0b-f7030dd706fb",
+		"name": "ChatBot",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5145934",
+		"_collection_link": "https://galactic-trinity-364700.postman.co/workspace/Operative~517702a8-c5a8-4831-b61c-d49079506c9f/collection/5145934-9ebf7b0e-e7c2-4234-9a0b-f7030dd706fb?action=share&source=collection_link&creator=5145934"
+	},
+	"item": [
+		{
+			"name": "upsertBulkThreads",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "ChatBotRESTAPIKEY",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "dWNSeFNJMEI0dzFkMU8wUmowTzY6SHg5ejRZYlJSYnFlY1VBU0x1cTFIZw==",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"threadData\": [\r\n    {\r\n      \"threadSubject\": \"How to find the cheapest flight ?\",\r\n      \"threadComments\": [\r\n        {\r\n          \"comment\": \"Try to order durring the night\",\r\n          \"likes\": 1\r\n        },\r\n        {\r\n          \"comment\": \"Book your flight at least half year in advance !\",\r\n          \"likes\": 4\r\n        },\r\n        {\r\n          \"comment\": \"If your dates are flexible so you can check 'flexible' checkbox option !\",\r\n          \"likes\": 1\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      \"threadSubject\": \"What is the best seats in BLUESKY airplanes ?\",\r\n      \"threadComments\": [\r\n        {\r\n          \"comment\": \"Exit row seats often provide extra legroom.\",\r\n          \"likes\": 3\r\n        },\r\n        {\r\n          \"comment\": \"Seats towards the front of the plane are generally quieter, as they are farther away from the engines.\",\r\n          \"likes\": 5\r\n        },\r\n        {\r\n          \"comment\": \"If you prefer to disembark quickly, choose a seat closer to the front of the plane.\",\r\n          \"likes\": 1\r\n        },\r\n        {\r\n          \"comment\": \"Window seats provide a view outside, and you won't be disturbed by other passengers needing to get up.\",\r\n          \"likes\": 4\r\n        },\r\n        {\r\n          \"comment\": \"If you want to recline without bothering others, choose a seat in the last row or near an exit row where seats often do not recline.\",\r\n          \"likes\": 2\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      \"threadSubject\": \"Guys, is BLUESKY good airline ?\",\r\n      \"threadComments\": [\r\n        {\r\n          \"comment\": \"They are the best !\",\r\n          \"likes\": 6\r\n        },\r\n        {\r\n          \"comment\": \"I usually prefer BLUESKY for long distance flights !\",\r\n          \"likes\": 3\r\n        },\r\n        {\r\n          \"comment\": \"Sometimes they are delaying...\",\r\n          \"likes\": 1\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/upsertBulkThreads?index=users_questions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"upsertBulkThreads"
+					],
+					"query": [
+						{
+							"key": "index",
+							"value": "users_questions"
+						},
+						{
+							"key": "index",
+							"value": "frequently_asked_question",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "searchThread",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "ChatBotRESTAPIKEY",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "dWNSeFNJMEI0dzFkMU8wUmowTzY6SHg5ejRZYlJSYnFlY1VBU0x1cTFIZw==",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"threadSubject\": \"cheap\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/searchThread?index=users_questions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"searchThread"
+					],
+					"query": [
+						{
+							"key": "index",
+							"value": "users_questions"
+						},
+						{
+							"key": "index",
+							"value": "frequently_asked_question",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upsertComment",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "ChatBotRESTAPIKEY",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "dWNSeFNJMEI0dzFkMU8wUmowTzY6SHg5ejRZYlJSYnFlY1VBU0x1cTFIZw==",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"threadSubject\": \"What is the best way to shovel snow ?\",\r\n  \"threadComments\": [{\"likes\": 0, \"comment\": \"with bucket ! :)\"}]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/upsertComment?index=users_questions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"upsertComment"
+					],
+					"query": [
+						{
+							"key": "index",
+							"value": "users_questions"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upsertThread",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "ChatBotRESTAPIKEY",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "dWNSeFNJMEI0dzFkMU8wUmowTzY6SHg5ejRZYlJSYnFlY1VBU0x1cTFIZw==",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"threadSubject\": \"Test New thread\",\r\n  \"threadComments\": [{\"likes\": 3, \"comment\": \"with your leg :)\"}]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/upsertThread?index=users_questions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"upsertThread"
+					],
+					"query": [
+						{
+							"key": "index",
+							"value": "users_questions"
+						},
+						{
+							"key": "index",
+							"value": "frequently_asked_question",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteAllData",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "ChatBotRESTAPIKEY",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "dWNSeFNJMEI0dzFkMU8wUmowTzY6SHg5ejRZYlJSYnFlY1VBU0x1cTFIZw==",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/deleteAllData?index=users_questions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"deleteAllData"
+					],
+					"query": [
+						{
+							"key": "index",
+							"value": "users_questions"
+						},
+						{
+							"key": "index",
+							"value": "frequently_asked_question",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllData",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "ChatBotRESTAPIKEY",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "dWNSeFNJMEI0dzFkMU8wUmowTzY6SHg5ejRZYlJSYnFlY1VBU0x1cTFIZw==",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/getAllData?index=users_questions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"getAllData"
+					],
+					"query": [
+						{
+							"key": "index",
+							"value": "users_questions"
+						},
+						{
+							"key": "index",
+							"value": "frequently_asked_question",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
