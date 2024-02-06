@@ -65,7 +65,6 @@ export class Thread extends LitElement {
                     <div class="container">
                         <div class="row">
                             <div class="col">
-                                <span class="material-symbols-outlined">forum</span>
                                 <h5>${data.threadSubject}</h5>
                             </div>
                         </div>
